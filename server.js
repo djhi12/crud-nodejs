@@ -13,7 +13,9 @@ const port = process.env.PORT || 3000;
 mongoose.connect(process.env.MONGODB_URI, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
+    useCreateIndex: true, // Recommended for index support
 });
+
 
 const db = mongoose.connection;
 
@@ -36,7 +38,7 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 app.get('/', (req, res) => {
     res.send('Hello, this is the root of your API.');
 });
-
+//
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
 });
