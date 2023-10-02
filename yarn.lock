@@ -11,7 +11,7 @@
     "@types/json-schema" "^7.0.6"
     call-me-maybe "^1.0.1"
     js-yaml "^4.1.0"
-
+ 
 "@apidevtools/openapi-schemas@^2.0.4":
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/@apidevtools/openapi-schemas/-/openapi-schemas-2.1.0.tgz#9fa08017fb59d80538812f03fc7cac5992caaa17"
