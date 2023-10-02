@@ -3,7 +3,6 @@ const express = require('express');
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 const itemsRoute = require('./routes/items');
-// server.js
 const { swaggerDocs, swaggerUi } = require('./swagger');
 
 dotenv.config();
@@ -14,6 +13,16 @@ const port = process.env.PORT || 3000;
 mongoose.connect(process.env.MONGODB_URI, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
+});
+
+const db = mongoose.connection;
+
+db.on('error', (err) => {
+    console.error(`MongoDB Connection Error: ${err.message}`);
+});
+
+db.once('open', () => {
+    console.log('Connected to MongoDB');
 });
 
 app.use(express.json());
