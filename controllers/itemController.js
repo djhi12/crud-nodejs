@@ -1,5 +1,5 @@
 // Import the Item model
-const Item = require('../model/item');
+const Item = require('../models/item');
 
 // Controller for handling CRUD operations
 const itemController = {
