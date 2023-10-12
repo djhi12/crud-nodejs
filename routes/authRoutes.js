@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const { SECRET_KEY } = require('../config/authConfig'); // Import your secret key from the configuration file
+const { JWT_SECRET } = require('../config/authConfig'); // Import your secret key from the configuration file
 const { User } = require('../models/user');
 const { authenticateUser } = require('../middleware/authMiddleware');
 
@@ -12,16 +12,16 @@ router.post('/register', async (req, res) => {
         const { username, password } = req.body;
 
         // Check if the user already exists
-        let user = await User.findOne({ username });
-        if (user) {
+        const existingUser = await User.findOne({ username });
+
+        if (existingUser) {
             return res.status(400).json({ message: 'User already exists' });
         }
 
         // Hash the password before saving it
-        const salt = await bcrypt.genSalt(10);
-        const hashedPassword = await bcrypt.hash(password, salt);
+        const hashedPassword = await bcrypt.hash(password, 10);
 
-        user = new User({
+        const user = new User({
             username,
             password: hashedPassword,
         });
@@ -29,7 +29,7 @@ router.post('/register', async (req, res) => {
         await user.save();
 
         // Generate a JSON Web Token (JWT) for the newly registered user
-        const token = jwt.sign({ user: { id: user._id } }, SECRET_KEY);
+        const token = jwt.sign({ user: { id: user._id } }, JWT_SECRET);
 
         res.status(201).json({ token });
     } catch (error) {
@@ -58,7 +58,7 @@ router.post('/login', async (req, res) => {
         }
 
         // Generate a JWT for the authenticated user
-        const token = jwt.sign({ user: { id: user._id } }, SECRET_KEY);
+        const token = jwt.sign({ user: { id: user._id } }, JWT_SECRET);
 
         res.json({ token });
     } catch (error) {

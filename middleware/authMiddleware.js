@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken');
-const { SECRET_KEY } = require('../config/authConfig'); // Import your secret key from the configuration file
+const { JWT_SECRET } = require('../config/authConfig'); // Import your JWT secret key from the configuration file
 
 // Middleware function to verify user authentication
 const authenticateUser = (req, res, next) => {
@@ -12,12 +12,16 @@ const authenticateUser = (req, res, next) => {
 
     try {
         // Verify and decode the token using your secret key
-        const decoded = jwt.verify(token, SECRET_KEY);
+        const decoded = jwt.verify(token, JWT_SECRET);
 
-        // You can also attach the user data to the request for later use
+        // Attach the user data to the request for later use
         req.user = decoded.user;
+
+        // Continue to the next middleware or route
         next();
     } catch (error) {
+        // Handle token verification errors
+        console.error(error);
         return res.status(401).json({ message: 'Unauthorized. Invalid token.' });
     }
 };
