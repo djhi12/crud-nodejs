@@ -5,12 +5,12 @@ const passport = require('passport');
 const session = require('express-session');
 const cors = require('cors');
 const itemsRoute = require('./routes/items');
-const authMiddleware = require('./middleware/authMiddleware');
 const authRoutes = require('./routes/auth');
 const { swaggerDocs, swaggerUi } = require('./swagger');
 const validateItem = require('./utils/validation');
 const Item = require('./models/item');
 const User = require('./models/user');
+const { authenticateUser } = require('./middleware/authMiddleware'); // Import your authMiddleware
 
 dotenv.config();
 
@@ -59,7 +59,7 @@ passport.deserializeUser((id, done) => {
 app.use('/api/auth', authRoutes);
 
 // Use the authMiddleware to protect routes that require authentication
-app.use(authMiddleware.authenticateUser);
+app.use(authenticateUser);
 
 app.use('/api/items', itemsRoute);
 

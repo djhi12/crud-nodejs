@@ -9,6 +9,13 @@ const swaggerOptions = {
             description: 'API documentation for your Node.js project',
             version: '1.0.0',
         },
+        securityDefinitions: {
+            BearerAuth: {
+                type: 'apiKey',
+                name: 'Authorization',
+                in: 'header',
+            },
+        },
     },
     apis: ['./routes/items.js'], // Specify your route files here
 };
