@@ -5,6 +5,7 @@ const passport = require('passport');
 const session = require('express-session');
 const cors = require('cors');
 const itemsRoute = require('./routes/items');
+const authMiddleware = require('./middleware/authMiddleware');
 const authRoutes = require('./routes/auth');
 const { swaggerDocs, swaggerUi } = require('./swagger');
 const validateItem = require('./utils/validation');
@@ -54,8 +55,13 @@ passport.deserializeUser((id, done) => {
     });
 });
 
-app.use('/api/items', itemsRoute);
+// Use the authRoutes for user authentication
 app.use('/api/auth', authRoutes);
+
+// Use the authMiddleware to protect routes that require authentication
+app.use(authMiddleware.authenticateUser);
+
+app.use('/api/items', itemsRoute);
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
