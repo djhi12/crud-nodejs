@@ -11,6 +11,7 @@ const validateItem = require('./utils/validation');
 const Item = require('./models/item');
 const User = require('./models/user');
 const { authenticateUser } = require('./middleware/authMiddleware'); // Import your authMiddleware
+const authConfig = require('./config/authConfig');
 
 dotenv.config();
 
